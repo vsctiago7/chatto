@@ -1,14 +1,26 @@
 import React from "react";
-import io from "socket.io-client";
+import Landing from "../landing/Landing";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Chat from "../chat/Chat";
+
 import "./App.css";
+import SocketContext from "../context/SocketContext";
 
 const App = () => {
-  const socket = io();
   return (
     <div className="App">
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
+      <SocketContext.Provider value={}>
+        <Router>
+          <Switch>
+            <Route path="/chat">
+              <Chat username="placeholder-user" />
+            </Route>
+            <Route path="/">
+              <Landing />
+            </Route>
+          </Switch>
+        </Router>
+      </SocketContext.Provider>
     </div>
   );
 };
