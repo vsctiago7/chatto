@@ -1,30 +1,35 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext } from 'react';
 // import io from "socket.io-client";
 import {
   NEW_MESSAGE,
   USER_CONNECTED,
-  USER_DISCONNECTED
-} from "../../constants/SocketEvents";
-import AuthContext from "../Context/AuthContext";
-import { SocketContext } from "../Context/SocketContext";
-import { useHistory } from "react-router-dom";
-import { Grid, TextField, makeStyles } from "@material-ui/core";
+  USER_DISCONNECTED,
+} from '../../constants/SocketEvents';
+import AuthContext from '../Context/AuthContext';
+import { SocketContext } from '../Context/SocketContext';
+import { useHistory } from 'react-router-dom';
+import {
+  Grid,
+  TextField,
+  makeStyles,
+  Typography,
+  Button,
+  Container,
+} from '@material-ui/core';
 
 const Line = ({ message }) => {
   const { username, content, type } = message;
-  if (type === "system") return <li>{`${content}`}</li>;
-  else return <li>{`${username}: ${content}`}</li>;
+  if (type === 'system') return <div>{`${content}`}</div>;
+  else return <div>{`${username}: ${content}`}</div>;
 };
 
-const useStyles = makeStyles(theme => ({
-  
-}));
+const useStyles = makeStyles(theme => ({}));
 
 const Form = ({ auth, message, setMessage, handleSubmit }) => {
   const classes = useStyles();
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container spacing={2}>
+      <Grid container justify="center" alignItems="stretch" spacing={2}>
         <Grid item>
           <TextField
             type="text"
@@ -33,13 +38,15 @@ const Form = ({ auth, message, setMessage, handleSubmit }) => {
               setMessage({
                 username: auth.username,
                 content: e.target.value,
-                type: "user"
+                type: 'user',
               })
             }
           />
         </Grid>
         <Grid item>
-          <input type="submit" value="Submit" />
+          <Button type="submit" color="primary" value="Submit">
+            Send
+          </Button>
         </Grid>
       </Grid>
     </form>
@@ -49,16 +56,16 @@ const Form = ({ auth, message, setMessage, handleSubmit }) => {
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState({
-    username: "",
-    content: "",
-    type: "user"
+    username: '',
+    content: '',
+    type: 'user',
   });
   const auth = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
   let history = useHistory();
 
-  if (auth.username === "" || socket == null) {
-    history.replace("/");
+  if (auth.username === '' || socket == null) {
+    history.replace('/');
     return null;
   }
 
@@ -66,7 +73,7 @@ const Chat = () => {
     const newMessage = {
       username: null,
       content: `${username} just joined.`,
-      type: "system"
+      type: 'system',
     };
     setMessages([...messages, newMessage]);
   });
@@ -75,7 +82,7 @@ const Chat = () => {
     const newMessage = {
       username: null,
       content: `${username} just left.`,
-      type: "system"
+      type: 'system',
     };
     setMessages([...messages, newMessage]);
   });
@@ -93,9 +100,9 @@ const Chat = () => {
     addMessage(message);
     socket.emit(NEW_MESSAGE, message);
     setMessage({
-      username: "",
-      content: "",
-      type: "user"
+      username: '',
+      content: '',
+      type: 'user',
     });
   };
 
@@ -103,11 +110,11 @@ const Chat = () => {
     return (
       <>
         <p>Chat</p>
-        <ul>
+        <div>
           {messages.map((message, index) => (
             <Line key={index} message={message} />
           ))}
-        </ul>
+        </div>
         <Form
           auth={auth}
           message={message}
@@ -119,13 +126,19 @@ const Chat = () => {
   } else {
     return (
       <>
-        <p>Chat</p>
-        <Form
-          auth={auth}
-          message={message}
-          setMessage={setMessage}
-          handleSubmit={handleSubmit}
-        />
+        <Grid container direction="column">
+          <Grid item xs>
+            <Typography variant="h5">Chat</Typography>
+          </Grid>
+          <Grid item xs>
+            <Form
+              auth={auth}
+              message={message}
+              setMessage={setMessage}
+              handleSubmit={handleSubmit}
+            />
+          </Grid>
+        </Grid>
       </>
     );
   }
