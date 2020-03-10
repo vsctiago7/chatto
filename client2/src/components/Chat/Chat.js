@@ -8,7 +8,7 @@ import {
 import AuthContext from "../Context/AuthContext";
 import { SocketContext } from "../Context/SocketContext";
 import { useHistory } from "react-router-dom";
-import { Grid } from "@material-ui/core";
+import { Grid, TextField, makeStyles } from "@material-ui/core";
 
 const Line = ({ message }) => {
   const { username, content, type } = message;
@@ -16,14 +16,18 @@ const Line = ({ message }) => {
   else return <li>{`${username}: ${content}`}</li>;
 };
 
+const useStyles = makeStyles(theme => ({
+  
+}));
+
 const Form = ({ auth, message, setMessage, handleSubmit }) => {
+  const classes = useStyles();
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container spacing={1}>
-        <Grid container item xs={2}>
-          <input
+      <Grid container spacing={2}>
+        <Grid item>
+          <TextField
             type="text"
-            placeholder="message"
             value={message.content}
             onChange={e =>
               setMessage({
@@ -34,7 +38,7 @@ const Form = ({ auth, message, setMessage, handleSubmit }) => {
             }
           />
         </Grid>
-        <Grid container item xs={2}>
+        <Grid item>
           <input type="submit" value="Submit" />
         </Grid>
       </Grid>

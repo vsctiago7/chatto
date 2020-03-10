@@ -1,15 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { orange } from "@material-ui/core/colors";
 
 import SocketProvider from "../Context/SocketContext";
 import AuthContext from "../Context/AuthContext";
 import MainLayout from "../Layouts/MainLayout";
 import Landing from "../Landing/Landing";
 import Chat from "../Chat/Chat";
-// import "./App.css";
-import { createMuiTheme, ThemeProvider, makeStyles } from "@material-ui/core";
-
-// const useStyles = makeStyles({theme}
 
 const App = () => {
   const initialAuthContext = {
@@ -18,12 +16,17 @@ const App = () => {
 
   const theme = createMuiTheme({
     palette: {
-      type: "dark"
+      type: "dark",
+      background: {
+        default: "#282c34"
+      },
+      primary: {
+        main: orange[300]
+      }
     }
   });
 
   return (
-    // <div>
     <ThemeProvider theme={theme}>
       <SocketProvider>
         <AuthContext.Provider value={initialAuthContext}>
@@ -44,7 +47,6 @@ const App = () => {
         </AuthContext.Provider>
       </SocketProvider>
     </ThemeProvider>
-    // </div>
   );
 };
 

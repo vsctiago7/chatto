@@ -21,18 +21,31 @@ const Form = ({ username, setUsername, handleSubmit }) => {
   return (
     <div className={classes.root}>
       <form onSubmit={handleSubmit}>
-        <Grid container direction="column" justify="center" alignItems="stretch" spacing={2}>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="stretch"
+          spacing={2}
+        >
           <Grid item>
             <TextField
               type="text"
               placeholder="username"
+              label="Type your nickname:"
               value={username}
               onChange={e => setUsername(e.target.value)}
               variant="standard"
             />
           </Grid>
           <Grid item>
-            <Button type="submit" disabled={!username} variant="text" fullWidth>
+            <Button
+              color="primary"
+              type="submit"
+              disabled={!username}
+              variant="text"
+              fullWidth
+            >
               Join
             </Button>
           </Grid>
