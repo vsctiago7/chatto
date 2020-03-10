@@ -3,6 +3,7 @@ import io from "socket.io-client";
 
 type ChatProps = {
   username: string;
+  socket: SocketIOClient.Socket;
 };
 
 type LineProps = {

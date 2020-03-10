@@ -1,19 +1,22 @@
 import React from "react";
-import Landing from "../landing/Landing";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Chat from "../chat/Chat";
+import io from "socket.io-client";
 
-import "./App.css";
+import Landing from "../landing/Landing";
+import Chat from "../chat/Chat";
 import SocketContext from "../context/SocketContext";
+import "./App.css";
+
+const socket = io("http://localhost:3000") as SocketIOClient.Socket;
 
 const App = () => {
   return (
     <div className="App">
-      <SocketContext.Provider value={}>
+      <SocketContext.Provider value={socket}>
         <Router>
           <Switch>
             <Route path="/chat">
-              <Chat username="placeholder-user" />
+              {socket => <Chat username="placeholder-user" socket={socket} />}
             </Route>
             <Route path="/">
               <Landing />
